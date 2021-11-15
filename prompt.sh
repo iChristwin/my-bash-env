@@ -57,8 +57,6 @@ eBGJ=1 # Track background jobs
 eSTJ=1 # Track stopped jobs
 eHOST=1 # Show user and host
 ePWD=1 # Show current directory
-eCONDA=1 #Show anaconda venv
-ePYENV=1 #Show python virtual environment 
 
 # Block settins
 MPXT1="0" # Terminal multiplexer threshold 1 value
@@ -68,61 +66,6 @@ BGJT2="2" # Background job threshold 2 value
 STJT1="0" # Stopped job threshold 1 value
 STJT2="2" # Stopped job threshold 2 value
 UHS="@"
-
-
-# Get the owner of the current working directory 
-function get_pwd_owner () {
-	stat -c %U .
-}
-
-# Determine active Anaconda virtualenv details.
-function set_pyenv () {
-	set_condaenv
-        if test -z $VIRTUAL_ENV ; then
-		PYENV="${PURPLE}${CONDA_ENV}${YELLOW}|${DEFAULT}"
-	else
-		venv="$(basename "${VIRTUAL_ENV}")"
-		PYENV="${PURPLE}${CONDA_ENV}${GREEN}+${PURPLE}${venv}${YELLOW}:${DEFAULT}"
-	fi
-}
-
-# Determine active Anaconda virtualenv details.
-function set_condaenv () {
-	if [ $eCONDA -eq 1 ] ; then
-		CONDA_ENV="${CONDA_DEFAULT_ENV}"
-	else
-		CONDA_ENV=""
-	fi
-
-}
-
-# determine git branch name
-function parse_git_branch(){
-        git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
-}
-
-# Set git prompt style
-function set_git_branch(){
-        #=========================================================
-        # check if we are inside a git repository
-        #=========================================================
-        if [[ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == true ]]
-        then
-                local git_branch=$(parse_git_branch)
-                #=========================================================
-                # check if we are ahead of remote repository, then color git indicator
-                # green if up to date, red if ahead
-                #=========================================================
-                if [[ -z $(git log origin/master..HEAD 2>/dev/null) ]]
-                then
-                        GIT_BRANCH="${YELLOW}|${GREEN}${git_branch}"
-                else
-                        GIT_BRANCH="${YELLOW}|${RED}${git_branch}"
-                fi
-	else 
-		GIT_BRANCH=""
-        fi
-}
 
 function promptcmd()
 {
@@ -158,27 +101,18 @@ function promptcmd()
         #=========================================================
         if [ $eERR -eq 1 ]; then
                 if [ $PREVRET -ne 0 ] ; then
-                        PS1="${PS1}${cBRACKETS}[${cERROR}?${cBRACKETS}]${cLINES}\342\224\200"
+                        PS1="${PS1}${cBRACKETS}[${cERROR}:(${cBRACKETS}]${cLINES}\342\224\200"
                 else
-                        PS1="${PS1}${cBRACKETS}[${cSUCCESS}!${cBRACKETS}]${cLINES}\342\224\200"
+                        PS1="${PS1}${cBRACKETS}[${cSUCCESS}:)${cBRACKETS}]${cLINES}\342\224\200"
                 fi
         fi
 
         #=========================================================
-	# Set the CONDA_VIRTUALENV variable
-        #=========================================================
-	# if [ $eCONDA -eq 1 ] ; then
-	# 	CONDA_ENV="${cBRACKETS}(${PINK}$CONDA_DEFAULT_ENV${cBRACKETS})${cLINES}\342\224\200"
-	# else
-	# 	CONDA_ENV=""
-	# fi
-	# PS1="${PS1}${cBRACKETS}${CONDA_ENV}"
-        #=========================================================
         # First static block - Current time
         #=========================================================
-        # if [ $eTIME -eq 1 ] ; then
-        #         PS1="${PS1}${cBRACKETS}[${cTIME}\t${cBRACKETS}]${cLINES}\342\224\200"
-        # fi
+        if [ $eTIME -eq 1 ] ; then
+                PS1="${PS1}${cBRACKETS}[${cTIME}\t${cBRACKETS}]${cLINES}\342\224\200"
+        fi
 
         #=========================================================
         # Detached Screen Sessions
@@ -230,34 +164,31 @@ function promptcmd()
         # Second Static block - User@host
         #=========================================================
         # set color for brackets if user is in ssh session
-        # sif [ $eSSH -eq 1 ] && [ $lSSH_FLAG -eq 1 ] ; then
-        # s        sesClr="$cSSH"
-        # selse
-        # s        sesClr="$cBRACKETS"
-        # sfi
-        # s# don't display user if root
-        # sif [ $EUID -eq 0 ] ; then
-        # s        PS1="${PS1}${sesClr}[${cRWN}!"
-        # selse
-        # s        PS1="${PS1}${sesClr}[${cUSR}\u"
-        # sfi
-        # s# Host Section
-        # sif [ $eHOST -eq 1 ] || [ $lSSH_FLAG -eq 1 ] ; then   # Host is optional only without SSH
-        # s        PS1="${PS1}${cUHS}${UHS}${cHST}\h${sesClr}]${cLINES}\342\224\200"
-        # selse
-        # s        PS1="${PS1}${sesClr}]${cLINES}\342\224\200"
-        # sfi
+        if [ $eSSH -eq 1 ] && [ $lSSH_FLAG -eq 1 ] ; then
+                sesClr="$cSSH"
+        else
+                sesClr="$cBRACKETS"
+        fi
+        # don't display user if root
+        if [ $EUID -eq 0 ] ; then
+                PS1="${PS1}${sesClr}[${cRWN}!"
+        else
+                PS1="${PS1}${sesClr}[${cUSR}\u"
+        fi
+        # Host Section
+        if [ $eHOST -eq 1 ] || [ $lSSH_FLAG -eq 1 ] ; then   # Host is optional only without SSH
+                PS1="${PS1}${cUHS}${UHS}${cHST}\h${sesClr}]${cLINES}\342\224\200"
+        else
+                PS1="${PS1}${sesClr}]${cLINES}\342\224\200"
+        fi
 
         #=========================================================
-        # Third Static Block - Current Directory + VENV + Git_branch
+        # Third Static Block - Current Directory
         #=========================================================
         if [ $ePWD -eq 1 ]; then
-                set_pyenv
-                set_git_branch
-		owner=$(get_pwd_owner)
-	        pwd_block="${cPWD}${owner}${GREEN}:${cPWD}\W"
-	        PS1="${PS1}[${PYENV}${pwd_block}${GIT_BRANCH}${cBRACKETS}]"
+                PS1="${PS1}[${cPWD}\w${cBRACKETS}]"
         fi
+
         #=========================================================
         # Second Line
         #=========================================================

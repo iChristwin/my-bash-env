@@ -5,7 +5,7 @@ export PS1_old
 
 # Use crazy awesome promt
 if [ -f ~/my-bash-env/prompt.sh ]; then
-    . ~/my-bash-env/prompt.sh
+	. ~/my-bash-env/prompt.sh
 fi
 
 # Change umask to make directory sharing easier
@@ -19,5 +19,5 @@ export HISTSIZE=1000
 alias l.='ls -d .* --color=auto'
 alias ll='ls -l --color=auto'
 alias lx='ls -hoAX --color=auto'
-alias py='python3.9'
-alias vnv='source ~/Nest/venv/bin/activate'
+alias py='python3.8'
+# alias vnv='source ~/Nest/venv/bin/activate'
