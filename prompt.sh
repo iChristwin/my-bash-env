@@ -151,16 +151,16 @@ function promptcmd()
         #=========================================================
         # Beginning of first line (arrow wrap around and color setup)
         #=========================================================
-        PS1="${PS1}${cLINES}\342\224\214\342\224\200"
+        PS1="${PS1}${cLINES}\[\342\224\214\]\[\342\224\200\]"
 
         #=========================================================
         # First Dynamic Block - Previous Command Error
         #=========================================================
         if [ $eERR -eq 1 ]; then
                 if [ $PREVRET -ne 0 ] ; then
-                        PS1="${PS1}${cBRACKETS}[${cERROR}?${cBRACKETS}]${cLINES}\342\224\200"
+                        PS1="${PS1}${cBRACKETS}[${cERROR}?${cBRACKETS}]${cLINES}\[\342\224\200\]"
                 else
-                        PS1="${PS1}${cBRACKETS}[${cSUCCESS}!${cBRACKETS}]${cLINES}\342\224\200"
+                        PS1="${PS1}${cBRACKETS}[${cSUCCESS}!${cBRACKETS}]${cLINES}\[\342\224\200\]"
                 fi
         fi
 
@@ -168,7 +168,7 @@ function promptcmd()
 	# Set the CONDA_VIRTUALENV variable
         #=========================================================
 	# if [ $eCONDA -eq 1 ] ; then
-	# 	CONDA_ENV="${cBRACKETS}(${PINK}$CONDA_DEFAULT_ENV${cBRACKETS})${cLINES}\342\224\200"
+	# 	CONDA_ENV="${cBRACKETS}(${PINK}$CONDA_DEFAULT_ENV${cBRACKETS})${cLINES}\[\342\224\200\]"
 	# else
 	# 	CONDA_ENV=""
 	# fi
@@ -177,7 +177,7 @@ function promptcmd()
         # First static block - Current time
         #=========================================================
         # if [ $eTIME -eq 1 ] ; then
-        #         PS1="${PS1}${cBRACKETS}[${cTIME}\t${cBRACKETS}]${cLINES}\342\224\200"
+        #         PS1="${PS1}${cBRACKETS}[${cTIME}\t${cBRACKETS}]${cLINES}\[\342\224\200\]"
         # fi
 
         #=========================================================
@@ -197,9 +197,9 @@ function promptcmd()
                         MPXC=$(screen -ls | grep -c -i detach)
                 fi
                 if [[ $MPXC -gt $MPXT2 ]] ; then
-                        PS1="${PS1}${cBRACKETS}[${cMPX2}\342\230\220:${MPXC}${cBRACKETS}]${cLINES}\342\224\200"
+                        PS1="${PS1}${cBRACKETS}[${cMPX2}\[\342\230\220\]:${MPXC}${cBRACKETS}]${cLINES}\[\342\224\200\]"
                 elif [[ $MPXC -gt $MPXT1 ]] ; then
-                        PS1="${PS1}${cBRACKETS}[${cMPX1}\342\230\220:${MPXC}${cBRACKETS}]${cLINES}\342\224\200"
+                        PS1="${PS1}${cBRACKETS}[${cMPX1}\[\342\230\220\]:${MPXC}${cBRACKETS}]${cLINES}\[\342\224\200\]"
                 fi
         fi
         #=========================================================
@@ -208,9 +208,9 @@ function promptcmd()
         if [ $eBGJ -eq 1 ] ; then
                 BGJC=$(jobs -r | wc -l )
                 if [ $BGJC -gt $BGJT2 ] ; then
-                        PS1="${PS1}${cBRACKETS}[${cBGJ2}&:${BGJC}${cBRACKETS}]${cLINES}\342\224\200"
+                        PS1="${PS1}${cBRACKETS}[${cBGJ2}&:${BGJC}${cBRACKETS}]${cLINES}\[\342\224\200\]"
                 elif [ $BGJC -gt $BGJT1 ] ; then
-                        PS1="${PS1}${cBRACKETS}[${cBGJ1}&:${BGJC}${cBRACKETS}]${cLINES}\342\224\200"
+                        PS1="${PS1}${cBRACKETS}[${cBGJ1}&:${BGJC}${cBRACKETS}]${cLINES}\[\342\224\200\]"
                 fi
         fi
 
@@ -220,9 +220,9 @@ function promptcmd()
         if [ $eSTJ -eq 1 ] ; then
                 STJC=$(jobs -s | wc -l )
                 if [ $STJC -gt $STJT2 ] ; then
-                        PS1="${PS1}${cBRACKETS}[${cSTJ2}\342\234\227:${STJC}${cBRACKETS}]${cLINES}\342\224\200"
+                        PS1="${PS1}${cBRACKETS}[${cSTJ2}\[\342\234\227\]:${STJC}${cBRACKETS}]${cLINES}\[\342\224\200\]"
                 elif [ $STJC -gt $STJT1 ] ; then
-                        PS1="${PS1}${cBRACKETS}[${cSTJ1}\342\234\227:${STJC}${cBRACKETS}]${cLINES}\342\224\200"
+                        PS1="${PS1}${cBRACKETS}[${cSTJ1}\[\342\234\227\]:${STJC}${cBRACKETS}]${cLINES}\[\342\224\200\]"
                 fi
         fi
 
@@ -243,9 +243,9 @@ function promptcmd()
         # sfi
         # s# Host Section
         # sif [ $eHOST -eq 1 ] || [ $lSSH_FLAG -eq 1 ] ; then   # Host is optional only without SSH
-        # s        PS1="${PS1}${cUHS}${UHS}${cHST}\h${sesClr}]${cLINES}\342\224\200"
+        # s        PS1="${PS1}${cUHS}${UHS}${cHST}\h${sesClr}]${cLINES}\[\342\224\200\]"
         # selse
-        # s        PS1="${PS1}${sesClr}]${cLINES}\342\224\200"
+        # s        PS1="${PS1}${sesClr}]${cLINES}\[\342\224\200\]"
         # sfi
 
         #=========================================================
@@ -261,7 +261,7 @@ function promptcmd()
         #=========================================================
         # Second Line
         #=========================================================
-        PS1="${PS1}\n${cLINES}\342\224\224\342\224\200\342\224\200> ${cCMD}"
+        PS1="${PS1}\n${cLINES}\[\342\224\224\]\[\342\224\200\]\[\342\224\200\]> ${cCMD}"
 }
 
 function load_prompt () {
