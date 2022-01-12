@@ -20,10 +20,16 @@ alias l.='ls -d .* --color=auto'
 alias ll='ls -l --color=auto'
 alias lx='ls -hoAX --color=auto'
 alias py='python3.8'
-alias wifi-on='nmcli radio wifi on'
-alias wifi-off='nmcli radio wifi off'
+
+alias blue-on='rfkill unblock bluetooth'
+alias blue-off='rfkill block bluetooth'
+
 alias broadband-on='nmcli radio wwan on'
 alias broadband-off='nmcli radio wwan off'
-alias blue-on='bluetoothctl power on'
-alias blue-off='bluetoothctl power off'
+
+alias wifi-on='nmcli radio wifi on'
+alias wifi-off='nmcli radio wifi off'
+
 # alias vnv='source ~/Nest/venv/bin/activate'
+
+# exec rfkill block bluetooth  # blue-off
