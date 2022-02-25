@@ -19,7 +19,10 @@ export HISTSIZE=1000
 alias l.='ls -d .* --color=auto'
 alias ll='ls -l --color=auto'
 alias lx='ls -hoAX --color=auto'
-alias py='python3.8'
+alias py='python3.10'
+alias wenv='source ~/Dev/web-env/bin/activate'
+alias denv='source ~/Dev/drone-env/bin/activate'
+alias xenv='source ~/X/x-env/bin/activate'
 
 alias blue-on='rfkill unblock bluetooth'
 alias blue-off='rfkill block bluetooth'
@@ -30,6 +33,7 @@ alias broadband-off='nmcli radio wwan off'
 alias wifi-on='nmcli radio wifi on'
 alias wifi-off='nmcli radio wifi off'
 
-# alias vnv='source ~/Nest/venv/bin/activate'
+alias mac='cd ~/Hackintosh/macOS-Simple-KVM/; HEADLESS=1 MEM=4G CPUS=2 SYSTEM_DISK=MyDisk.qcow2 ./headless.sh'
 
-# exec rfkill block bluetooth  # blue-off
+neofetch
+
