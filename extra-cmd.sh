@@ -20,9 +20,12 @@ alias l.='ls -d .* --color=auto'
 alias ll='ls -l --color=auto'
 alias lx='ls -hoAX --color=auto'
 alias py='python3.10'
+alias python3='/usr/bin/python'
+
 alias wenv='source ~/Dev/web-env/bin/activate'
 alias denv='source ~/Dev/drone-env/bin/activate'
 alias xenv='source ~/X/x-env/bin/activate'
+alias datalab='conda activate DataLab'
 
 alias blue-on='rfkill unblock bluetooth'
 alias blue-off='rfkill block bluetooth'
@@ -35,5 +38,20 @@ alias wifi-off='nmcli radio wifi off'
 
 alias mac='cd ~/Hackintosh/macOS-Simple-KVM/; HEADLESS=1 MEM=4G CPUS=2 SYSTEM_DISK=MyDisk.qcow2 ./headless.sh'
 
-neofetch
 
+# wal -qi ~/Pictures/Fav/peakpx.jpg
+# wal -qi ~/Pictures/wallpapers
+
+# Import colorscheme from 'wal' asynchronously
+# &   # Run the process in the background.
+# ( ) # Hide shell job control messages.
+(cat ~/.cache/wal/sequences &)
+
+# Alternative (blocks terminal for 0-3ms)
+cat ~/.cache/wal/sequences
+
+# To add support for TTYs this line can be optionally added.
+source ~/.cache/wal/colors-tty.sh
+
+neofetch --ascii Red.txt # --colors 1 7 7 1 7 208 --ascii_colors 1 --color_blocks off
+# cbatticon -u 7 -r 15 -l 25 -c 'poweroff'
